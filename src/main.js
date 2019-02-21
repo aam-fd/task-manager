@@ -35,7 +35,7 @@ filterNames.forEach((nameFilter) => {
   mainFilterSection.appendChild(div);
 });
 
-const taskCardSCount = 7; // `отрисуйте семь одинаковых карточек задач в .board__tasks`
+let taskCardSCount = 7; // `отрисуйте семь одинаковых карточек задач в .board__tasks`
 
 const loadButton = document.querySelector(`.load-more`);
 const boardTasksSection = document.querySelector(`.board__tasks`);
