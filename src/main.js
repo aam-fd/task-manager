@@ -35,11 +35,12 @@ filterNames.forEach(element => {
   mainFilterSection.appendChild(div);
 });
 
-const cardCount = 7; // `отрисуйте семь одинаковых карточек задач в .board__tasks`
+const taskCardSCount = 7; // `отрисуйте семь одинаковых карточек задач в .board__tasks`
+
 const loadButton = document.querySelector(`.load-more`);
 const boardTasksSection = document.querySelector(`.board__tasks`);
 
-const getCardInner = () => {
+const getTaskCardTemplate = () => {
 
   return `          
     <form class="card__form" method="get">
@@ -291,12 +292,30 @@ This is example of new task, you can add picture, set date and time, add tags.</
   `;
 }
 
-for(let i = 0; i < cardCount; i++) {
+const renderCards = (count) => {
+  for(let i = 0; i < count; i++) {
 
-  const article = document.createElement(`article`);
-  article.classList.add(`card`);
-  article.innerHTML = getCardInner();
+    const taskCard = document.createElement(`article`);
+    taskCard.classList.add(`card`);
+    taskCard.innerHTML = getTaskCardTemplate();
+  
+    boardTasksSection.insertBefore(taskCard, loadButton);
+  }
+};
 
-  boardTasksSection.insertBefore(article, loadButton);
+renderCards(taskCardSCount);
 
-}
+const filterLabels = document.querySelectorAll(`.filter__label`);
+
+[].forEach.call(filterLabels, (label) => {
+  label.addEventListener(`click`, function() {
+
+    const taskCards = document.querySelectorAll(`.card`);
+    [].forEach.call(taskCards, (card) => {
+      card.remove();
+    });
+
+    taskCardSCount = getRandomNumber(1, 10);
+    renderCards(taskCardSCount);
+  });
+});
