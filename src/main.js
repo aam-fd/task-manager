@@ -1,6 +1,6 @@
 'use strict';
 
-function getRandomNumber(min, max){
+const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
@@ -25,12 +25,12 @@ const getFilterTemplate = (filterName, count) => {
   `;
 };
 
-filterNames.forEach(element => {
+filterNames.forEach((nameFilter) => {
 
   const div = document.createElement(`div`);
   const count = getRandomNumber(0, 10);
 
-  div.innerHTML = getFilterTemplate(element, count);
+  div.innerHTML = getFilterTemplate(nameFilter, count);
 
   mainFilterSection.appendChild(div);
 });
@@ -290,15 +290,15 @@ This is example of new task, you can add picture, set date and time, add tags.</
       </div>
     </form>
   `;
-}
+};
 
 const renderCards = (count) => {
-  for(let i = 0; i < count; i++) {
+  for (let i = 0; i < count; i++) {
 
     const taskCard = document.createElement(`article`);
     taskCard.classList.add(`card`);
     taskCard.innerHTML = getTaskCardTemplate();
-  
+
     boardTasksSection.insertBefore(taskCard, loadButton);
   }
 };
@@ -308,7 +308,7 @@ renderCards(taskCardSCount);
 const filterLabels = document.querySelectorAll(`.filter__label`);
 
 [].forEach.call(filterLabels, (label) => {
-  label.addEventListener(`click`, function() {
+  label.addEventListener(`click`, () => {
 
     const taskCards = document.querySelectorAll(`.card`);
     [].forEach.call(taskCards, (card) => {
