@@ -84,8 +84,8 @@
         <label class="visually-hidden" for="search__input">Поиск</label>
       </section>
 
-      <section class="main__filter filter container">
-        <input
+      <section class="main__filter filter container"> <!-- При помощи функции для отрисовки отдельного фильтра отрисуйте в .main__filter все фильтры, предусмотренные макетом: «All», «Overdue», «Today», «Favorites», «Repeating», «Tags», «Archive» -->
+      <!-- <input
           type="radio"
           id="filter__all"
           class="filter__input visually-hidden"
@@ -150,7 +150,7 @@
         />
         <label for="filter__archive" class="filter__label"
           >ARCHIVE <span class="filter__archive-count">115</span></label
-        >
+        > -->
       </section>
 
       <section class="statistic container visually-hidden">
@@ -204,8 +204,8 @@
           «add new task» button.
         </p>
 
-        <div class="board__tasks">
-          <article class="card card--edit card--black">
+        <div class="board__tasks"> <!-- С помощью функции для отрисовки одной карточки задачи отрисуйте семь одинаковых карточек задач в .board__tasks -->
+          <!-- <article class="card card--edit card--black">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -452,7 +452,7 @@ This is example of new task, you can add picture, set date and time, add tags.</
               </div>
             </form>
           </article>
-
+          
           <article class="card card--pink card--repeat">
             <form class="card__form" method="get">
               <div class="card__inner">
@@ -745,7 +745,7 @@ It is example of repeating task. It marks by wave.</textarea
               </div>
             </form>
           </article>
-
+          
           <article class="card card--yellow card--deadline">
             <form class="card__form" method="get">
               <div class="card__inner">
@@ -1038,7 +1038,7 @@ This is card with missing deadline</textarea
               </div>
             </form>
           </article>
-
+          
           <article class="card card--edit card--yellow card--repeat">
             <form class="card__form" method="get">
               <div class="card__inner">
@@ -1332,8 +1332,8 @@ Here is a card with filled data</textarea
                 </div>
               </div>
             </form>
-          </article>
-
+          </article> 
+          
           <article class="card card--blue">
             <form class="card__form" method="get">
               <div class="card__inner">
@@ -1623,8 +1623,8 @@ Here is a card with filled data</textarea
                 </div>
               </div>
             </form>
-          </article>
-
+          </article> 
+          
           <article class="card card--blue">
             <form class="card__form" method="get">
               <div class="card__inner">
@@ -1916,11 +1916,12 @@ Here is a card with filled data</textarea
                 </div>
               </div>
             </form>
-          </article>
-        </div>
+          </article> -->
 
         <button class="load-more" type="button">load more</button>
       </section>
     </main>
+
+    <script src="../src/main.js"></script>
   </body>
 </html>
