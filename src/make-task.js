@@ -1,6 +1,5 @@
-export default () => {
-
-  return `          
+export default () => `
+  <article class="card">
     <form class="card__form" method="get">
       <div class="card__inner">
 
@@ -247,5 +246,5 @@ This is example of new task, you can add picture, set date and time, add tags.</
         </div>
       </div>
     </form>
-  `;
-};
+  </article>
+`;
