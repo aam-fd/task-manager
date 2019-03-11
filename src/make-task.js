@@ -2,11 +2,13 @@ import {getFormatDate, getFormatTime} from './utils';
 
 const makeWeekDays = (repeatingDays) => {
 
-  [`mo`,`tu`,`we`,`th`,`fr`,`sa`,`su`].foreach(weekDay => {
+  const days = [];
+
+  [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`].forEach((weekDay) => {
 
     let checked = repeatingDays.weekDay ? `checked` : ``;
 
-    return `
+    days.push(`
       <input
         class="visually-hidden card__repeat-day-input"
         type="checkbox"
@@ -18,29 +20,36 @@ const makeWeekDays = (repeatingDays) => {
       <label class="card__repeat-day" for="repeat-${weekDay}-6"
         >${weekDay}</label
       >
-    `
+    `);
   });
+
+  return days;
 };
 
-const makeTags = (tags) => {
-  tags.foreach(tag => {
-    return `
+const makeTags = (tagsData) => {
+
+  const tags = [];
+
+  tagsData.forEach((tagData) => {
+    tags.push(`
       <span class="card__hashtag-inner">
         <input
           type="hidden"
           name="hashtag"
-          value="${tag}"
+          value="${tagData}"
           class="card__hashtag-hidden-input"
         />
         <button type="button" class="card__hashtag-name">
-          #${tag}
+          #${tagData}
         </button>
         <button type="button" class="card__hashtag-delete">
           delete
         </button>
       </span>
-    `
+    `);
   });
+
+  return tags.join(``);
 };
 
 
