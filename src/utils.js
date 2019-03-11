@@ -1,10 +1,10 @@
 export const getRandomNumber = (min, max) => {
   return Math.round(Math.random() * (max - min) + min);
-}
+};
 
 export const getFormatDate = (date) => {
   let day = date.getDate();
-  if (day < 10) day = `0` + day;
+  day = day < 10 ? `0` + day : day;
 
   const months = [
     `January`,
@@ -23,7 +23,7 @@ export const getFormatDate = (date) => {
   let month = date.getMonth();
 
   return day + ` ` + months[month].toUpperCase();
-}
+};
 
 export const getFormatTime = (date) => {
   const timeOptions = {
@@ -32,4 +32,4 @@ export const getFormatTime = (date) => {
   };
 
   return date.toLocaleTimeString(`en-US`, timeOptions);
-}
+};
