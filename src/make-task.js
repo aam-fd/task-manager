@@ -4,7 +4,7 @@ const makeWeekDays = (repeatingDays) => {
 
   const days = [];
 
-  [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`].forEach((weekDay) => {
+  Object.keys(repeatingDays).forEach((weekDay) => {
 
     let checked = repeatingDays.weekDay ? `checked` : ``;
 
