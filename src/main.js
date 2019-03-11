@@ -1,7 +1,7 @@
 import makeFilterTemplate from './make-filter';
 import makeTaskCardTemplate from './make-task';
 import {getRandomNumber} from './utils';
-import {taskData} from './mock';
+import {makeTaskData} from './mock';
 
 // отрисовка всех фильтров
 
@@ -19,9 +19,18 @@ let taskCardSCount = 7; // `отрисуйте семь одинаковых к�
 const boardTasksSection = document.querySelector(`.board__tasks`);
 
 const renderCards = (dist, count) => {
-  const tasks = new Array(count)
-    .fill()
-    .map(makeTaskCardTemplate(taskData));
+  // const tasks = new Array(count)
+  // .fill()
+  // .map(makeTaskCardTemplate(makeTaskData()));
+  const tasks = [];
+
+  while (count > 0) {
+    const taskData = makeTaskData();
+    const task = makeTaskCardTemplate(taskData);
+    tasks.push(task);
+    count--;
+  }
+
   dist.insertAdjacentHTML(`beforeend`, tasks.join(``));
 };
 
