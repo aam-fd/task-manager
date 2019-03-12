@@ -1,9 +1,9 @@
 import makeFilterTemplate from './make-filter';
 import makeTaskCardTemplate from './make-task';
+import {getRandomNumber} from './utils';
+import {makeTaskData} from './mock';
 
-const getRandomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min) + min);
-};
+// отрисовка всех фильтров
 
 const mainFilterSection = document.querySelector(`.main__filter`);
 const filterNames = [`all`, `overdue`, `today`, `favorites`, `repeating`, `tags`, `archive`];
@@ -13,13 +13,24 @@ filterNames.forEach((nameFilter) => {
   mainFilterSection.insertAdjacentHTML(`beforeend`, makeFilterTemplate(nameFilter, count));
 });
 
+// отрисовка всех карточек задач
+
 let taskCardSCount = 7; // `отрисуйте семь одинаковых карточек задач в .board__tasks`
 const boardTasksSection = document.querySelector(`.board__tasks`);
 
 const renderCards = (dist, count) => {
-  const tasks = new Array(count)
-    .fill()
-    .map(makeTaskCardTemplate);
+  // const tasks = new Array(count)
+  // .fill()
+  // .map(makeTaskCardTemplate(makeTaskData()));
+  const tasks = [];
+
+  while (count > 0) {
+    const taskData = makeTaskData();
+    const task = makeTaskCardTemplate(taskData);
+    tasks.push(task);
+    count--;
+  }
+
   dist.insertAdjacentHTML(`beforeend`, tasks.join(``));
 };
 
