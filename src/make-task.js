@@ -4,7 +4,7 @@ const makeWeekDays = (repeatingDays) => {
 
   const days = [];
 
-  Object.keys(repeatingDays).forEach((weekDay) => {
+  Object.keys(repeatingDays).forEach((weekDay, index) => {
 
     let checked = repeatingDays.weekDay ? `checked` : ``;
 
@@ -12,12 +12,12 @@ const makeWeekDays = (repeatingDays) => {
       <input
         class="visually-hidden card__repeat-day-input"
         type="checkbox"
-        id="repeat-${weekDay}-6"
+        id="repeat-${weekDay}-${index}"
         name="repeat"
         value="${weekDay}"
         ${checked}
       />
-      <label class="card__repeat-day" for="repeat-${weekDay}-6"
+      <label class="card__repeat-day" for="repeat-${weekDay}-${index}"
         >${weekDay}</label
       >
     `);
