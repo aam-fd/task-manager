@@ -1,4 +1,4 @@
-import {createElement, getFormatDate, getFormatTime} from './utils';
+import {getFormatDate, getFormatTime} from './utils';
 
 export class Task {
   constructor(data) {
@@ -155,7 +155,7 @@ export class Task {
   // }
 
   render() {
-    this._element = createElement(this.template);
+    this._element = this.template;
     // this._element.querySelector(`.card__btn--edit`).addEventListener(`click`, this._onEditButtonClick.bind(this));
     return this._element;
   }
