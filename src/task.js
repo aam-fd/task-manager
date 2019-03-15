@@ -1,8 +1,7 @@
-import {getFormatDate, getFormatTime} from './utils';
+import {getFormatDate, getFormatTime, createElement} from './utils';
 
 export class Task {
   constructor(data) {
-    console.warn(data);
     this._color = data.color;
     this._title = data.title;
     this._tags = data.tags;
@@ -26,7 +25,7 @@ export class Task {
   }
 
   _onEditButtonClick() {
-    return typeof this._onEdit === `function` && this._onEdit();
+    typeof this._onEdit === `function` && this._onEdit();
   }
 
   get element() {
@@ -146,22 +145,26 @@ export class Task {
           </div>
         </form>
       </article>
-    `;
+    `.trim();
   }
 
-  // bind() {
-  //   this._element.querySelector(`.card__btn--edit`)
-  //     .addEventListener(`click`, this._onEditButtonClick.bind(this));
-  // }
+  bind() {
+    this._element.querySelector(`.card__btn--edit`)
+      .addEventListener(`click`, this._onEditButtonClick.bind(this));
+  }
 
   render() {
-    this._element = this.template;
-    // this._element.querySelector(`.card__btn--edit`).addEventListener(`click`, this._onEditButtonClick.bind(this));
+    this._element = createElement(this.template);
+    this.bind();
     return this._element;
   }
 
+  unbind() {
+    // this.onEdit(null);
+  }
+  
   unrender() {
-    this.onEdit(null);
+    this.unbind();
     this._element = null;
   }
 }
