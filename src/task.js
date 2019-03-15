@@ -36,7 +36,7 @@ export class Task {
     this._onEdit = value;
   }
 
-  makeTags(tagsData) {
+  _makeTags(tagsData) {
     const tags = [];
 
     tagsData.forEach((tagData) => {
@@ -124,7 +124,7 @@ export class Task {
 
                 <div class="card__hashtag">
                   <div class="card__hashtag-list">
-                    ${this.makeTags(this._tags)}
+                    ${this._makeTags(this._tags)}
                   </div>
                 </div>
               </div>
