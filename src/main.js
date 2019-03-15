@@ -1,4 +1,4 @@
-import makeFilterTemplate from './make-filter';
+import {Filter} from './filter';
 import {getRandomNumber} from './utils';
 import {makeTasksData} from './mock';
 import {Task} from './task';
@@ -8,13 +8,26 @@ import {TaskEdit} from './task-edit';
 const mainFilterSection = document.querySelector(`.main__filter`);
 const filterNames = [`all`, `overdue`, `today`, `favorites`, `repeating`, `tags`, `archive`];
 
-filterNames.forEach((nameFilter) => {
+filterNames.forEach((name) => {
   const count = getRandomNumber(0, 10);
-  mainFilterSection.insertAdjacentHTML(`beforeend`, makeFilterTemplate(nameFilter, count));
+
+  const filterComponent = new Filter(name, count);
+  mainFilterSection.appendChild(filterComponent.render());
+
+  filterComponent.onChangeCount = () => {
+
+    const taskCards = document.querySelectorAll(`.card`);
+    [].forEach.call(taskCards, (card) => {
+      card.remove();
+    });
+
+    const tasksCount = getRandomNumber(1, 10);
+    renderCards(boardTasksSection, tasksCount);
+  };
 });
 
 // отрисовка всех карточек задач
-let taskCardSCount = 7; // `отрисуйте семь одинаковых карточек задач в .board__tasks`
+let FIRST_LOAD_TASKS_COUNT = 7; // `отрисуйте семь одинаковых карточек задач в .board__tasks`
 const boardTasksSection = document.querySelector(`.board__tasks`);
 
 const renderCards = (dist, count) => {
@@ -41,18 +54,4 @@ const renderCards = (dist, count) => {
 
 };
 
-renderCards(boardTasksSection, taskCardSCount);
-
-const filterLabels = document.querySelectorAll(`.filter__label`);
-[].forEach.call(filterLabels, (label) => {
-  label.addEventListener(`click`, () => {
-
-    const taskCards = document.querySelectorAll(`.card`);
-    [].forEach.call(taskCards, (card) => {
-      card.remove();
-    });
-
-    taskCardSCount = getRandomNumber(1, 10);
-    renderCards(boardTasksSection, taskCardSCount);
-  });
-});
+renderCards(boardTasksSection, FIRST_LOAD_TASKS_COUNT);
