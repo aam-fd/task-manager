@@ -36,7 +36,7 @@ const renderCards = (dist, count) => {
       taskComponent.render();
       dist.replaceChild(taskComponent.element, editTaskComponent.element);
       editTaskComponent.unrender();
-    }
+    };
   });
 
 };

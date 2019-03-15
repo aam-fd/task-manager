@@ -25,7 +25,7 @@ export class Task {
   }
 
   _onEditButtonClick() {
-    typeof this._onEdit === `function` && this._onEdit();
+    return typeof this._onEdit === `function` && this._onEdit();
   }
 
   get element() {
@@ -162,7 +162,7 @@ export class Task {
   unbind() {
     // this.onEdit(null);
   }
-  
+
   unrender() {
     this.unbind();
     this._element = null;

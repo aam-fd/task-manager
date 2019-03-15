@@ -19,7 +19,7 @@ export class TaskEdit {
 
   _onSubmitButtonClick(evt) {
     evt.preventDefault();
-    typeof this._onSubmit === `function` && this._onSubmit();
+    return typeof this._onSubmit === `function` && this._onSubmit();
   }
 
   get element() {
@@ -58,11 +58,11 @@ export class TaskEdit {
   makeWeekDays(repeatingDays) {
 
     const days = [];
-  
+
     Object.keys(repeatingDays).forEach((weekDay, index) => {
-  
+
       let checked = repeatingDays.weekDay ? `checked` : ``;
-  
+
       days.push(`
         <input
           class="visually-hidden card__repeat-day-input"
@@ -77,9 +77,9 @@ export class TaskEdit {
         >
       `);
     });
-  
+
     return days;
-  };
+  }
 
   get template() {
     return `
@@ -274,7 +274,7 @@ export class TaskEdit {
   unbind() {
     // this.onEdit(null);
   }
-  
+
   unrender() {
     this.unbind();
     this._element = null;
