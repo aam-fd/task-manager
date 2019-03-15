@@ -16,10 +16,6 @@ export class Task {
     this._onEdit = null;
   }
 
-  // setEditClass() {
-  //   this._element.querySelector(`.card`).classList.add(`card--edit`);
-  // }
-
   _isRepeated() {
     return Object.values(this._repeatingDays).some((it) => it === true);
   }
@@ -160,7 +156,7 @@ export class Task {
   }
 
   unbind() {
-    // this.onEdit(null);
+    this.onEdit(null);
   }
 
   unrender() {

@@ -272,7 +272,7 @@ export class TaskEdit {
   }
 
   unbind() {
-    // this.onEdit(null);
+    this.onEdit(null);
   }
 
   unrender() {
