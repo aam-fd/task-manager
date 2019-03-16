@@ -47,3 +47,7 @@ export const makeTaskData = () => {
     isDone: !getRandomNumber(0, 1),
   };
 };
+
+export const makeTasksData = (count) => {
+  return new Array(count).fill().map(() => makeTaskData());
+};
