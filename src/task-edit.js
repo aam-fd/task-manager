@@ -11,6 +11,7 @@ export class TaskEdit {
 
     this._element = null;
     this._onSubmit = null;
+    this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
   }
 
   _isRepeated() {
@@ -261,8 +262,8 @@ export class TaskEdit {
   }
 
   bind() {
-    this._element.querySelector(`.card__form`)
-      .addEventListener(`click`, this._onSubmitButtonClick.bind(this));
+    this._element.querySelector(`.card__save`)
+      .addEventListener(`click`, this._onSubmitButtonClick);
   }
 
   render() {
@@ -272,7 +273,8 @@ export class TaskEdit {
   }
 
   unbind() {
-    this.onEdit(null);
+    this._element.querySelector(`.card__save`)
+      .removeEventListener(`click`, this._onSubmitButtonClick);
   }
 
   unrender() {
