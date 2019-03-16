@@ -262,8 +262,8 @@ export class TaskEdit {
   }
 
   bind() {
-    this._element.querySelector(`.card__save`)
-      .addEventListener(`click`, this._onSubmitButtonClick);
+    this._element.querySelector(`form`)
+      .addEventListener(`submit`, this._onSubmitButtonClick);
   }
 
   render() {
@@ -273,8 +273,8 @@ export class TaskEdit {
   }
 
   unbind() {
-    this._element.querySelector(`.card__save`)
-      .removeEventListener(`click`, this._onSubmitButtonClick);
+    this._element.querySelector(`form`)
+      .removeEventListener(`submit`, this._onSubmitButtonClick);
   }
 
   unrender() {
