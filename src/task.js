@@ -1,15 +1,15 @@
-import {getFormatDate, getFormatTime, createElement} from './utils';
+import {getFormatDate, getFormatTime} from './utils';
+import {Component} from './component';
 
-export class Task {
+export class Task extends Component {
   constructor(data) {
+    super();
     this._color = data.color;
     this._title = data.title;
     this._tags = data.tags;
     this._picture = data.picture;
     this._dueDate = data.dueDate;
     this._repeatingDays = data.repeatingDays;
-
-    this._element = null;
     this._state = {
       // Состояние компонента
     };
@@ -23,10 +23,6 @@ export class Task {
 
   _onEditButtonClick() {
     return typeof this._onEdit === `function` && this._onEdit();
-  }
-
-  get element() {
-    return this._element;
   }
 
   set onEdit(value) {
@@ -150,19 +146,9 @@ export class Task {
       .addEventListener(`click`, this._onEditButtonClick);
   }
 
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
   unbind() {
     this._element.querySelector(`.card__btn--edit`)
       .removeEventListener(`click`, this._onEditButtonClick);
   }
 
-  unrender() {
-    this.unbind();
-    this._element = null;
-  }
 }
