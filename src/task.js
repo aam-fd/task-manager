@@ -14,6 +14,7 @@ export class Task {
       // Состояние компонента
     };
     this._onEdit = null;
+    this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
 
   _isRepeated() {
@@ -146,7 +147,7 @@ export class Task {
 
   bind() {
     this._element.querySelector(`.card__btn--edit`)
-      .addEventListener(`click`, this._onEditButtonClick.bind(this));
+      .addEventListener(`click`, this._onEditButtonClick);
   }
 
   render() {
@@ -156,7 +157,8 @@ export class Task {
   }
 
   unbind() {
-    this.onEdit(null);
+    this._element.querySelector(`.card__btn--edit`)
+      .removeEventListener(`click`, this._onEditButtonClick);
   }
 
   unrender() {
