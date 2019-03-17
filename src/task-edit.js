@@ -1,7 +1,9 @@
-import {getFormatDate, getFormatTime, createElement} from './utils';
+import {getFormatDate, getFormatTime} from './utils';
+import {Component} from './component';
 
-export class TaskEdit {
+export class TaskEdit extends Component {
   constructor(data) {
+    super();
     this._color = data.color;
     this._title = data.title;
     this._tags = data.tags;
@@ -9,7 +11,6 @@ export class TaskEdit {
     this._dueDate = data.dueDate;
     this._repeatingDays = data.repeatingDays;
 
-    this._element = null;
     this._onSubmit = null;
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
   }
@@ -21,10 +22,6 @@ export class TaskEdit {
   _onSubmitButtonClick(evt) {
     evt.preventDefault();
     return typeof this._onSubmit === `function` && this._onSubmit();
-  }
-
-  get element() {
-    return this._element;
   }
 
   set onSubmit(value) {
@@ -266,19 +263,9 @@ export class TaskEdit {
       .addEventListener(`submit`, this._onSubmitButtonClick);
   }
 
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
   unbind() {
     this._element.querySelector(`.card__form`)
       .removeEventListener(`submit`, this._onSubmitButtonClick);
   }
 
-  unrender() {
-    this.unbind();
-    this._element = null;
-  }
 }
