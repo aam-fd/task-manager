@@ -1,5 +1,8 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-return-assign */
 import {getFormatDate, getFormatTime} from './utils';
 import {Component} from './component';
+import {colorsName} from './mock';
 
 export class TaskEdit extends Component {
   constructor(data) {
@@ -13,6 +16,31 @@ export class TaskEdit extends Component {
 
     this._onSubmit = null;
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
+
+    this._state = {
+      isDate: false,
+      isRepeated: false,
+    };
+
+    this._onChangeRepeated = this._onChangeRepeated.bind(this);
+  }
+
+  _processForm(formData) {
+    const entry = {
+      title: ``,
+      color: ``,
+      tags: new Set(),
+      dueDate: new Date(),
+      repeatingDays: {
+        'mo': false,
+        'tu': false,
+        'we': false,
+        'th': false,
+        'fr': false,
+        'sa': false,
+        'su': false,
+      }
+    };
   }
 
   _isRepeated() {
@@ -20,15 +48,35 @@ export class TaskEdit extends Component {
   }
 
   _onSubmitButtonClick(evt) {
+    console.log(evt);
     evt.preventDefault();
-    return typeof this._onSubmit === `function` && this._onSubmit();
+    const formData = new FormData(this._element.querySelector(`.card__form`));
+    console.log(this._element.querySelector(`.card__form`));
+    console.log(new FormData(this._element.querySelector(`.card__form`)));
+    console.log(formData);
+    const newData = this._processForm(formData);
+    console.log(newData);
+    typeof this._onSubmit === `function` && this._onSubmit(newData);
+
+    this.update(newData);
+  }
+
+  _onChangeRepeated() {
+    this._state.isRepeated = !this._state.isRepeated;
+    this.unbind();
+    this._partialUpdate();
+    this.bind();
+  }
+
+  _partialUpdate() {
+    this._element.innerHTML = this.template;
   }
 
   set onSubmit(value) {
     this._onSubmit = value;
   }
 
-  makeTags(tagsData) {
+  _makeTagList(tagsData) {
     const tags = [];
 
     tagsData.forEach((tagData) => {
@@ -53,7 +101,7 @@ export class TaskEdit extends Component {
     return tags.join(``);
   }
 
-  makeWeekDays(repeatingDays) {
+  _makeWeekDaysInner(repeatingDays) {
 
     const days = [];
 
@@ -76,7 +124,30 @@ export class TaskEdit extends Component {
       `);
     });
 
-    return days;
+    return days.join(``);
+  }
+
+  _makeColorsInner(color) {
+    const colorTemplates = [];
+
+    colorsName.forEach((colorName) => {
+      colorTemplates.push(`
+        <input
+          type="radio"
+          id="color-${colorName}-6"
+          class="card__color-input card__color-input--${colorName} visually-hidden"
+          name="color"
+          value="${colorName}"
+          ${color === colorName && `checked`}
+        />
+        <label
+          for="color-${colorName}-6"
+          class="card__color card__color--${colorName}"
+          >${colorName}</label
+        >
+      `);
+    });
+    return colorTemplates.join(``);
   }
 
   get template() {
@@ -85,18 +156,12 @@ export class TaskEdit extends Component {
         <form class="card__form" method="get">
           <div class="card__inner">
             <div class="card__control">
-              <button type="button" class="card__btn card__btn--edit">
-                edit
-              </button>
-              <button type="button" class="card__btn card__btn--archive">
-                archive
-              </button>
-              <button
-                type="button"
-                class="card__btn card__btn--favorites card__btn--disabled"
-              >
-                favorites
-              </button>
+              <button type="button" class="card__btn card__btn--edit"
+                >edit</button>
+              <button type="button" class="card__btn card__btn--archive"
+                >archive</button>
+              <button type="button" class="card__btn card__btn--favorites card__btn--disabled"
+                >favorites</button>
             </div>
 
             <div class="card__color-bar">
@@ -119,9 +184,9 @@ export class TaskEdit extends Component {
               <div class="card__details">
                 <div class="card__dates">
                   <button class="card__date-deadline-toggle" type="button">
-                    date: <span class="card__date-status">no</span>
+                    date: <span class="card__date-status">${this._state.isDate ? `yes` : `no`}</span>
                   </button>
-                  <fieldset class="card__date-deadline">
+                  <fieldset class="card__date-deadline" ${!this._state.isDate && `disabled`}>
                     <label class="card__input-deadline-wrap">
                       <input
                         class="card__date"
@@ -143,19 +208,19 @@ export class TaskEdit extends Component {
                   </fieldset>
 
                   <button class="card__repeat-toggle" type="button">
-                    repeat:<span class="card__repeat-status">no</span>
+                    repeat:<span class="card__repeat-status">${this._state.isRepeated ? `yes` : `no`}</span>
                   </button>
 
                   <fieldset class="card__repeat-days">
                     <div class="card__repeat-days-inner">
-                      ${this.makeWeekDays(this._repeatingDays)}
+                      ${this._makeWeekDaysInner(this._repeatingDays)}
                     </div>
                   </fieldset>
                 </div>
 
                 <div class="card__hashtag">
                   <div class="card__hashtag-list">
-                    ${this.makeTags(this._tags)}
+                    ${this._makeTagList(this._tags)}
                   </div>
                   <label>
                     <input
@@ -184,67 +249,7 @@ export class TaskEdit extends Component {
               <div class="card__colors-inner">
                 <h3 class="card__colors-title">Color</h3>
                 <div class="card__colors-wrap">
-                  <input
-                    type="radio"
-                    id="color-black-6"
-                    class="card__color-input card__color-input--black visually-hidden"
-                    name="color"
-                    value="black"
-                  />
-                  <label
-                    for="color-black-6"
-                    class="card__color card__color--black"
-                    >black</label
-                  >
-                  <input
-                    type="radio"
-                    id="color-yellow-6"
-                    class="card__color-input card__color-input--yellow visually-hidden"
-                    name="color"
-                    value="yellow"
-                  />
-                  <label
-                    for="color-yellow-6"
-                    class="card__color card__color--yellow"
-                    >yellow</label
-                  >
-                  <input
-                    type="radio"
-                    id="color-blue-6"
-                    class="card__color-input card__color-input--blue visually-hidden"
-                    name="color"
-                    value="blue"
-                  />
-                  <label
-                    for="color-blue-6"
-                    class="card__color card__color--blue"
-                    >blue</label
-                  >
-                  <input
-                    type="radio"
-                    id="color-green-6"
-                    class="card__color-input card__color-input--green visually-hidden"
-                    name="color"
-                    value="green"
-                    checked
-                  />
-                  <label
-                    for="color-green-6"
-                    class="card__color card__color--green"
-                    >green</label
-                  >
-                  <input
-                    type="radio"
-                    id="color-pink-6"
-                    class="card__color-input card__color-input--pink visually-hidden"
-                    name="color"
-                    value="pink"
-                  />
-                  <label
-                    for="color-pink-6"
-                    class="card__color card__color--pink"
-                    >pink</label
-                  >
+                  ${this._makeColorsInner(this._color)}
                 </div>
               </div>
             </div>
@@ -268,4 +273,21 @@ export class TaskEdit extends Component {
       .removeEventListener(`submit`, this._onSubmitButtonClick);
   }
 
+  update(data) {
+    this._color = data.color;
+    this._title = data.title;
+    this._tags = data.tags;
+    this._dueDate = data.dueDate;
+    this._repeatingDays = data.repeatingDays;
+  }
+
+  static createMapper(target) {
+    return {
+      hashtag: (value) => target.tags.add(value),
+      text: (value) => target.title = value,
+      color: (value) => target.color = value,
+      repeat: (value) => target.repeatingDays[value] = true,
+      date: (value) => target.dueDate[value],
+    };
+  }
 }

@@ -57,7 +57,6 @@ export class Task extends Component {
   get template() {
     return `
       <article class="card card--${this._color} ${this._isRepeated() ? `card--repeat` : ``}">
-        <form class="card__form" method="get">
           <div class="card__inner">
             <div class="card__control">
               <button type="button" class="card__btn card__btn--edit">
@@ -136,7 +135,7 @@ export class Task extends Component {
               </label>
             </div>
           </div>
-        </form>
+
       </article>
     `.trim();
   }
@@ -149,6 +148,14 @@ export class Task extends Component {
   unbind() {
     this._element.querySelector(`.card__btn--edit`)
       .removeEventListener(`click`, this._onEditButtonClick);
+  }
+
+  update(data) {
+    this._color = data.color;
+    this._title = data.title;
+    this._tags = data.tags;
+    this._dueDate = data.dueDate;
+    this._repeatingDays = data.repeatingDays;
   }
 
 }

@@ -2,7 +2,7 @@ import {getRandomNumber} from './utils';
 
 const titles = [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`];
 const tagsList = [`homework`, `theory`, `practice`, `intensive`, `keks`, `spb`, `relax`, `dance`];
-const colors = [`black`, `yellow`, `blue`, `green`, `pink`];
+export const colorsName = [`black`, `yellow`, `blue`, `green`, `pink`];
 
 const makeDate = () => {
   const currentDateMilliseconds = Date.now();
@@ -33,7 +33,7 @@ export const makeTaskData = () => {
     dueDate: makeDate(),
     tags: makeTags(),
     picture: `http://picsum.photos/100/100?r=${Math.random()}`,
-    color: colors[getRandomNumber(0, colors.length - 1)],
+    color: colorsName[getRandomNumber(0, colorsName.length - 1)],
     repeatingDays: {
       mo: makeDayChecked(),
       tu: makeDayChecked(),
