@@ -1,5 +1,5 @@
-import {getFormatDate, getFormatTime} from './utils';
 import {Component} from './component';
+import moment from 'moment';
 
 export class Task extends Component {
   constructor(data) {
@@ -99,7 +99,7 @@ export class Task extends Component {
                         type="text"
                         placeholder="23 September"
                         name="date"
-                        value="${getFormatDate(this._dueDate)}"
+                        value="${moment(this._dueDate).format(`DD MMMM`)}"
                       />
                     </label>
                     <label class="card__input-deadline-wrap">
@@ -108,7 +108,7 @@ export class Task extends Component {
                         type="text"
                         placeholder="11:15 PM"
                         name="time"
-                        value="${getFormatTime(this._dueDate)}"
+                        value="${moment(this._dueDate).format(`LT`)}"
                       />
                     </label>
                   </fieldset>
@@ -151,10 +151,10 @@ export class Task extends Component {
   }
 
   update(data) {
-    this._color = data.color;
     this._title = data.title;
-    this._tags = data.tags;
     this._dueDate = data.dueDate;
+    this._tags = data.tags;
+    this._color = data.color;
     this._repeatingDays = data.repeatingDays;
   }
 

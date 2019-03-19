@@ -47,14 +47,12 @@ const renderCards = (dist, count) => {
 
     editTaskComponent.onSubmit = (newObject) => {
       taskData.title = newObject.title;
+      taskData.dueDate = newObject.dueDate;
       taskData.tags = newObject.tags;
       taskData.color = newObject.color;
       taskData.repeatingDays = newObject.repeatingDays;
-      taskData.dueDate = newObject.dueDate;
 
       taskComponent.update(taskData);
-
-
       taskComponent.render();
       dist.replaceChild(taskComponent.element, editTaskComponent.element);
       editTaskComponent.unrender();
