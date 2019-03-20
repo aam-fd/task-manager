@@ -106,6 +106,12 @@ export class TaskEdit extends Component {
     this._partialUpdate();
     this.bind();
   }
+  _onChangeColor() {
+    this.this._color = !this._state.isDate;
+    this.unbind();
+    this._partialUpdate();
+    this.bind();
+  }
 
   _partialUpdate() {
     this._element.innerHTML = this.template;
@@ -248,7 +254,7 @@ export class TaskEdit extends Component {
                     repeat:<span class="card__repeat-status">${this._state.isRepeated ? `yes` : `no`}</span>
                   </button>
 
-                  <fieldset class="card__repeat-days">
+                  <fieldset class="card__repeat-days ${!this._state.isRepeated ? `visually-hidden` : ``}">
                     <div class="card__repeat-days-inner">
                       ${this._makeWeekDaysInner(this._repeatingDays)}
                     </div>
@@ -307,6 +313,8 @@ export class TaskEdit extends Component {
       .addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
       .addEventListener(`click`, this._onChangeRepeated);
+    this._element.querySelector(`.card__color-input`)
+      .addEventListener(`click`, this._onChangeColor);
 
     if (this._state.isDate) {
       flatpickr(`.card__date`, {altInput: true, altFormat: `j F`, dateFormat: `j F`});
@@ -321,6 +329,11 @@ export class TaskEdit extends Component {
       .removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
       .removeEventListener(`click`, this._onChangeRepeated);
+    this._element.querySelector(`.card__color-input`)
+      .removeEventListener(`click`, this._onChangeColor);
+
+
+      
   }
 
   update(data) {
