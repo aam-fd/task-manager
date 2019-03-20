@@ -109,7 +109,6 @@ export class TaskEdit extends Component {
   }
 
   _onChangeColor(evt) {
-    console.log(evt);
     const changedColor = evt.target.innerHTML;
     if (changedColor) {
       this._color = changedColor;
@@ -120,7 +119,7 @@ export class TaskEdit extends Component {
   }
 
   _partialUpdate() {
-    this._element.innerHTML = this.template
+    this._element.innerHTML = this.template;
   }
 
   _partialColorUpdate() {
@@ -340,7 +339,7 @@ export class TaskEdit extends Component {
       .removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
       .removeEventListener(`click`, this._onChangeRepeated);
-      this._element.querySelector(`.card__colors-wrap`)
+    this._element.querySelector(`.card__colors-wrap`)
       .removeEventListener(`click`, this._onChangeColor);
   }
 
