@@ -22,6 +22,7 @@ export class TaskEdit extends Component {
 
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
     this._onChangeDate = this._onChangeDate.bind(this);
+    this._onChangeColor = this._onChangeColor.bind(this);
   }
 
   static createMapper(target) {
@@ -106,14 +107,24 @@ export class TaskEdit extends Component {
     this._partialUpdate();
     this.bind();
   }
-  _onChangeColor() {
-    this.this._color = !this._state.isDate;
+
+  _onChangeColor(evt) {
+    console.log(evt);
+    const changedColor = evt.target.innerHTML;
+    if (changedColor) {
+      this._color = changedColor;
+    }
     this.unbind();
-    this._partialUpdate();
+    this._partialColorUpdate();
     this.bind();
   }
 
   _partialUpdate() {
+    this._element.innerHTML = this.template
+  }
+
+  _partialColorUpdate() {
+    this._element.removeAttribute(`class`);
     this._element.innerHTML = this.template;
   }
 
@@ -313,7 +324,7 @@ export class TaskEdit extends Component {
       .addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
       .addEventListener(`click`, this._onChangeRepeated);
-    this._element.querySelector(`.card__color-input`)
+    this._element.querySelector(`.card__colors-wrap`)
       .addEventListener(`click`, this._onChangeColor);
 
     if (this._state.isDate) {
@@ -329,11 +340,8 @@ export class TaskEdit extends Component {
       .removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
       .removeEventListener(`click`, this._onChangeRepeated);
-    this._element.querySelector(`.card__color-input`)
+      this._element.querySelector(`.card__colors-wrap`)
       .removeEventListener(`click`, this._onChangeColor);
-
-
-      
   }
 
   update(data) {
