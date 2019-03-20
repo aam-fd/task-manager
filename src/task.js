@@ -85,6 +85,7 @@ export class Task extends Component {
                   class="card__text"
                   placeholder="Start typing your text here..."
                   name="text"
+                  disabled
                 >${this._title}</textarea>
               </label>
             </div>
@@ -122,11 +123,6 @@ export class Task extends Component {
               </div>
 
               <label class="card__img-wrap">
-                <input
-                  type="file"
-                  class="card__img-input visually-hidden"
-                  name="img"
-                />
                 <img
                   src="${this._picture}"
                   alt="task picture"

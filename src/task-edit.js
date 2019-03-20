@@ -25,12 +25,20 @@ export class TaskEdit extends Component {
   }
 
   static createMapper(target) {
+    let fullDate = ``;
     return {
       text: (value) => {
         target.title = value;
       },
-      date: (value) => target.dueDate[value],
+      date: (value) => {
+        fullDate = value;
+      },
+      time: (value) => {
+        fullDate += value;
+        target.dueDate = new Date(fullDate);
+      },
       hashtag: (value) => target.tags.add(value),
+      hashtagInput: (value) => target.tags.add(value),
       color: (value) => {
         target.color = value;
       },
@@ -255,7 +263,7 @@ export class TaskEdit extends Component {
                     <input
                       type="text"
                       class="card__hashtag-input"
-                      name="hashtag-input"
+                      name="hashtagInput"
                       placeholder="Type new hashtag here"
                     />
                   </label>
