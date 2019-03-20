@@ -1,6 +1,7 @@
 import {Component} from './component';
 import {colorsName} from './mock';
 import flatpickr from 'flatpickr';
+import moment from 'moment';
 
 export class TaskEdit extends Component {
   constructor(data) {
@@ -16,13 +17,14 @@ export class TaskEdit extends Component {
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
 
     this._state = {
-      isDate: false,
-      isRepeated: false,
+      isDate: this._dueDate ? true : false,
+      isRepeated: Object.values(this._repeatingDays).some((it) => it === `checked`),
     };
 
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeColor = this._onChangeColor.bind(this);
+    this._onDeleteHashtag = this._onDeleteHashtag.bind(this);
   }
 
   static createMapper(target) {
@@ -44,7 +46,7 @@ export class TaskEdit extends Component {
         target.color = value;
       },
       repeat: (value) => {
-        target.repeatingDays[value] = true;
+        target.repeatingDays[value] = `checked`;
       },
     };
   }
@@ -56,13 +58,13 @@ export class TaskEdit extends Component {
       tags: new Set(),
       color: ``,
       repeatingDays: {
-        'mo': false,
-        'tu': false,
-        'we': false,
-        'th': false,
-        'fr': false,
-        'sa': false,
-        'su': false,
+        mo: ``,
+        tu: ``,
+        we: ``,
+        th: ``,
+        fr: ``,
+        sa: ``,
+        su: ``,
       }
     };
 
@@ -79,7 +81,7 @@ export class TaskEdit extends Component {
   }
 
   _isRepeated() {
-    return Object.values(this._repeatingDays).some((it) => it === true);
+    return Object.values(this._repeatingDays).some((it) => it === `checked`);
   }
 
   _onSubmitButtonClick(evt) {
@@ -109,21 +111,21 @@ export class TaskEdit extends Component {
   }
 
   _onChangeColor(evt) {
-    const changedColor = evt.target.innerHTML;
-    if (changedColor) {
-      this._color = changedColor;
+    if (evt.target.type === `radio`) {
+      this._element.classList.replace(`card--${this._color}`, `card--${evt.target.value}`);
+      this._color = evt.target.value;
     }
-    this.unbind();
-    this._partialColorUpdate();
-    this.bind();
+  }
+
+  _onDeleteHashtag(evt) {
+    const hashtagInner = this._element.querySelector(`#${evt.target.parentElement.id}`);
+
+    hashtagInner.querySelector(`.card__hashtag-delete`)
+      .removeEventListener(`click`, this._onDeleteHashtag);
+    hashtagInner.remove();
   }
 
   _partialUpdate() {
-    this._element.innerHTML = this.template;
-  }
-
-  _partialColorUpdate() {
-    this._element.removeAttribute(`class`);
     this._element.innerHTML = this.template;
   }
 
@@ -136,7 +138,7 @@ export class TaskEdit extends Component {
 
     tagsData.forEach((tagData) => {
       tags.push(`
-        <span class="card__hashtag-inner">
+        <span id="hashtag-${tagData}" class="card__hashtag-inner">
           <input
             type="hidden"
             name="hashtag"
@@ -159,11 +161,7 @@ export class TaskEdit extends Component {
   _makeWeekDaysInner(repeatingDays) {
 
     const days = [];
-
     Object.keys(repeatingDays).forEach((weekDay, index) => {
-
-      let checked = repeatingDays.weekDay ? `checked` : ``;
-
       days.push(`
         <input
           class="visually-hidden card__repeat-day-input"
@@ -171,7 +169,7 @@ export class TaskEdit extends Component {
           id="repeat-${weekDay}-${index}"
           name="repeat"
           value="${weekDay}"
-          ${checked}
+          ${repeatingDays[weekDay]}
         />
         <label class="card__repeat-day" for="repeat-${weekDay}-${index}"
           >${weekDay}</label
@@ -248,6 +246,7 @@ export class TaskEdit extends Component {
                       type="text"
                       placeholder="23 September"
                       name="date"
+                      value="${moment(this._dueDate).format(`DD MMMM`)}"
                       />
                     </label>
                     <label class="card__input-deadline-wrap">
@@ -256,6 +255,7 @@ export class TaskEdit extends Component {
                       type="text"
                       placeholder="11:15 PM"
                       name="time"
+                      value="${moment(this._dueDate).format(`LT`)}"
                       />
                     </label>
                   </fieldset>
@@ -323,12 +323,15 @@ export class TaskEdit extends Component {
       .addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
       .addEventListener(`click`, this._onChangeRepeated);
-    this._element.querySelector(`.card__colors-wrap`)
-      .addEventListener(`click`, this._onChangeColor);
+    this._element.querySelector(`.card__form`)
+      .addEventListener(`change`, this._onChangeColor);
+    this._element.querySelectorAll(`.card__hashtag-delete`).forEach((r) => {
+      r.addEventListener(`click`, this._onDeleteHashtag);
+    });
 
     if (this._state.isDate) {
-      flatpickr(`.card__date`, {altInput: true, altFormat: `j F`, dateFormat: `j F`});
-      flatpickr(`.card__time`, {enableTime: true, noCalendar: true, altInput: true, altFormat: `h:i K`, dateFormat: `h:i K`});
+      flatpickr(this._element.querySelector(`.card__date`), {altInput: true, altFormat: `j F`, dateFormat: `j F`});
+      flatpickr(this._element.querySelector(`.card__time`), {enableTime: true, noCalendar: true, altInput: true, altFormat: `h:i K`, dateFormat: `h:i K`});
     }
   }
 
@@ -339,8 +342,11 @@ export class TaskEdit extends Component {
       .removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
       .removeEventListener(`click`, this._onChangeRepeated);
-    this._element.querySelector(`.card__colors-wrap`)
-      .removeEventListener(`click`, this._onChangeColor);
+    this._element.querySelector(`.card__form`)
+      .removeEventListener(`change`, this._onChangeColor);
+    this._element.querySelectorAll(`.card__hashtag-delete`).forEach((r) => {
+      r.removeEventListener(`click`, this._onDeleteHashtag);
+    });
   }
 
   update(data) {

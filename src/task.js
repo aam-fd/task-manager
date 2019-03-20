@@ -18,7 +18,7 @@ export class Task extends Component {
   }
 
   _isRepeated() {
-    return Object.values(this._repeatingDays).some((it) => it === true);
+    return Object.values(this._repeatingDays).some((it) => it === `checked`);
   }
 
   _onEditButtonClick() {
