@@ -281,6 +281,10 @@ body {
 .card__textarea-wrap {
   position: relative;
 }
+.card__text:disabled {
+  background-color: white;
+  color: black;
+}
 .card__text {
   border: 1px solid rgba(0, 0, 0, 0.2);
   resize: none;

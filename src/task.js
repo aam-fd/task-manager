@@ -1,5 +1,5 @@
-import {getFormatDate, getFormatTime} from './utils';
 import {Component} from './component';
+import moment from 'moment';
 
 export class Task extends Component {
   constructor(data) {
@@ -18,7 +18,7 @@ export class Task extends Component {
   }
 
   _isRepeated() {
-    return Object.values(this._repeatingDays).some((it) => it === true);
+    return Object.values(this._repeatingDays).some((it) => it === `checked`);
   }
 
   _onEditButtonClick() {
@@ -57,7 +57,6 @@ export class Task extends Component {
   get template() {
     return `
       <article class="card card--${this._color} ${this._isRepeated() ? `card--repeat` : ``}">
-        <form class="card__form" method="get">
           <div class="card__inner">
             <div class="card__control">
               <button type="button" class="card__btn card__btn--edit">
@@ -86,6 +85,7 @@ export class Task extends Component {
                   class="card__text"
                   placeholder="Start typing your text here..."
                   name="text"
+                  disabled
                 >${this._title}</textarea>
               </label>
             </div>
@@ -100,7 +100,7 @@ export class Task extends Component {
                         type="text"
                         placeholder="23 September"
                         name="date"
-                        value="${getFormatDate(this._dueDate)}"
+                        value="${moment(this._dueDate).format(`DD MMMM`)}"
                       />
                     </label>
                     <label class="card__input-deadline-wrap">
@@ -109,7 +109,7 @@ export class Task extends Component {
                         type="text"
                         placeholder="11:15 PM"
                         name="time"
-                        value="${getFormatTime(this._dueDate)}"
+                        value="${moment(this._dueDate).format(`LT`)}"
                       />
                     </label>
                   </fieldset>
@@ -123,11 +123,6 @@ export class Task extends Component {
               </div>
 
               <label class="card__img-wrap">
-                <input
-                  type="file"
-                  class="card__img-input visually-hidden"
-                  name="img"
-                />
                 <img
                   src="${this._picture}"
                   alt="task picture"
@@ -136,7 +131,7 @@ export class Task extends Component {
               </label>
             </div>
           </div>
-        </form>
+
       </article>
     `.trim();
   }
@@ -149,6 +144,14 @@ export class Task extends Component {
   unbind() {
     this._element.querySelector(`.card__btn--edit`)
       .removeEventListener(`click`, this._onEditButtonClick);
+  }
+
+  update(data) {
+    this._title = data.title;
+    this._dueDate = data.dueDate;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
   }
 
 }
