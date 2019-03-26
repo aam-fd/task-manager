@@ -12,6 +12,7 @@ export class TaskEdit extends Component {
     this._picture = data.picture;
     this._dueDate = data.dueDate;
     this._repeatingDays = data.repeatingDays;
+    this._isDeleted = data.isDeleted;
 
     this._onSubmit = null;
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
@@ -25,6 +26,13 @@ export class TaskEdit extends Component {
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeColor = this._onChangeColor.bind(this);
     this._onDeleteHashtag = this._onDeleteHashtag.bind(this);
+
+    this._onDelete = null;
+    this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
+  }
+
+  _isRepeated() {
+    return Object.values(this._repeatingDays).some((it) => it === `checked`);
   }
 
   static createMapper(target) {
@@ -80,10 +88,6 @@ export class TaskEdit extends Component {
     return entry;
   }
 
-  _isRepeated() {
-    return Object.values(this._repeatingDays).some((it) => it === `checked`);
-  }
-
   _onSubmitButtonClick(evt) {
 
     evt.preventDefault();
@@ -94,6 +98,23 @@ export class TaskEdit extends Component {
     }
 
     this.update(newData);
+  }
+
+  set onSubmit(value) {
+    this._onSubmit = value;
+  }
+
+  _onDeleteButtonClick() {
+    this._isDeleted = true;
+    return typeof this._onDelete === `function` && this._onDelete(this._isDeleted);
+  }
+
+  set onDelete(value) {
+    this._onDelete = value;
+  }
+
+  _partialUpdate() {
+    this._element.innerHTML = this.template;
   }
 
   _onChangeRepeated() {
@@ -123,14 +144,6 @@ export class TaskEdit extends Component {
     hashtagInner.querySelector(`.card__hashtag-delete`)
       .removeEventListener(`click`, this._onDeleteHashtag);
     hashtagInner.remove();
-  }
-
-  _partialUpdate() {
-    this._element.innerHTML = this.template;
-  }
-
-  set onSubmit(value) {
-    this._onSubmit = value;
   }
 
   _makeTagList(tagsData) {
@@ -327,6 +340,8 @@ export class TaskEdit extends Component {
       .addEventListener(`change`, this._onChangeColor);
     this._element.querySelectorAll(`.card__hashtag-delete`).forEach((r) => {
       r.addEventListener(`click`, this._onDeleteHashtag);
+    this._element.querySelector(`.card__delete`)
+      .addEventListener(`click`, this._onDeleteButtonClick);
     });
 
     if (this._state.isDate) {
@@ -347,6 +362,8 @@ export class TaskEdit extends Component {
     this._element.querySelectorAll(`.card__hashtag-delete`).forEach((r) => {
       r.removeEventListener(`click`, this._onDeleteHashtag);
     });
+    this._element.querySelector(`.card__delete`)
+      .removeEventListener(`click`, this._onDeleteButtonClick);
   }
 
   update(data) {

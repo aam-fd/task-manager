@@ -45,6 +45,7 @@ export const makeTaskData = () => {
     },
     isFavorite: !getRandomNumber(0, 1),
     isDone: !getRandomNumber(0, 1),
+    isDeleted: false,
   };
 };
 
